@@ -21,6 +21,7 @@ def detail(request,category_slug, slug):
     context = { 'post': post, 'form': form, }
     return render(request, 'blog/detail.html', context)
 
+
 def category(request,slug):
     category = get_object_or_404(Category, slug=slug)
     posts = category.posts.filter(status=Post.ACTIVE)
@@ -30,3 +31,16 @@ def category(request,slug):
         posts = posts
     )
     return render(request, 'blog/category.html', context)
+
+
+def search(request):
+    query = request.GET.get('query', '')
+    posts = Post.objects.filter(title__icontains=query)
+
+    context = dict(
+        query = query,
+        posts = posts
+    )
+    return render(request, 'blog/search.html', context)
+
+
