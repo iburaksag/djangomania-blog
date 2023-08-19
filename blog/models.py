@@ -11,6 +11,8 @@ class Category(models.Model):
     def __str__(self):
         return self.title
     
+    def get_absolute_url(self):
+        return '/%s' % self.slug
 
 class Post(models.Model):
     #SELECT BOX _ START
@@ -38,6 +40,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+    def get_absolute_url(self):
+        return '/%s' % (self.category.slug, self.slug)
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)         
