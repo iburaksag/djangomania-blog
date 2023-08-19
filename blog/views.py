@@ -1,3 +1,4 @@
+from django.db.models import Q # this is going to allow us to search in multiple fields.
 from django.shortcuts import get_object_or_404, render, redirect
 
 from .forms import CommentForm
@@ -35,7 +36,7 @@ def category(request,slug):
 
 def search(request):
     query = request.GET.get('query', '')
-    posts = Post.objects.filter(title__icontains=query)
+    posts = Post.objects.filter(status=Post.ACTIVE).filter(Q(title__icontains=query) | Q(intro__icontains=query) | Q(body__icontains=query))
 
     context = dict(
         query = query,
